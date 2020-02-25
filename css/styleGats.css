@@ -1,0 +1,76 @@
+body {
+    margin: 0px 0px 62px 0px;
+    padding: 0;
+    overflow: hidden;
+    background-color: #9E1A32;
+}
+
+header {
+    background-color: rgb(240, 61, 94);
+    vertical-align: top;
+
+}
+
+.header-text {
+    font-family: arial;
+    font-size: 15px;
+    font-style: normal;
+}
+
+
+#map {
+    height: 100%;
+    width: 100%;
+    border-color: #FFF;
+    border-bottom: 2px solid #fff;
+    border-top: 2px solid #fff;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h2 {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 1px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.popupCustom .leaflet-popup-tip,
+.popupCustom .leaflet-popup-content-wrapper {
+    background: #9E1A32;
+}
+
+.popup-content-text {
+    text-align: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    background-color: #9E1A32;
+    color: #fff;
+}
+
+.popup-content-text2 {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding-top: 0;
+    background-color: #9E1A32;
+    color: #fff;
+}
+
+.popup-foto {
+    width: 20px;
+    height: 20px;
+}
+
+.popup-foto2 {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    border-radius: 7%;
+}
+
+.control-foto {
+    width: 12px;
+    height: 12px;
+}

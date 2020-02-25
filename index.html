@@ -1,0 +1,1393 @@
+<html lang="es">
+
+<head>
+    <title>Colònies i poblacions de gats</title>
+    <link rel="shortcut icon" href="img/cat.png" type="png" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styleGats.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+    <script>
+        L_PREFER_CANVAS = true;
+    </script>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.js"></script>
+    <link rel="stylesheet" href="https://labs.easyblog.it/maps/leaflet-search/src/leaflet-search.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet"
+        href="https://rawgit.com/nguyenning/Leaflet.defaultextent/master/dist/leaflet.defaultextent.css" />
+    <script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
+    <script src="https://rawgit.com/nguyenning/Leaflet.defaultextent/master/dist/leaflet.defaultextent.js"></script>
+
+    <script>
+        var map, capa1, capa2, capa3;
+        var gats;
+        var manresa;
+        var searchControl;
+        var controlCapas;
+        var controlEscala;
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYW5uYXBvcnRpIiwiYSI6ImNqcmpqdm5oNjBjZGs0M2x4bW5zMWw3NGMifQ.9kWUs3fzfDZ_391Jt1ZpvQ';
+
+        function init() {
+            map = L.map("map", {
+                center: [41.7212354, 1.8320274],
+                zoom: 13,
+            });
+            capa1 = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5uYXBvcnRpIiwiYSI6ImNqcmpqdm5oNjBjZGs0M2x4bW5zMWw3NGMifQ.9kWUs3fzfDZ_391Jt1ZpvQ', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 19,
+                minZoom: 1,
+                id: 'mapbox/satellite-streets-v11',
+                accessToken: 'your.mapbox.access.token'
+            }).addTo(map);
+            capa2 = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5uYXBvcnRpIiwiYSI6ImNqcmpqdm5oNjBjZGs0M2x4bW5zMWw3NGMifQ.9kWUs3fzfDZ_391Jt1ZpvQ', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 19,
+                minZoom: 1,
+                id: 'mapbox/streets-v11',
+                accessToken: 'your.mapbox.access.token'
+            });
+            capa3 = L.tileLayer(
+                'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19,
+                minZoom: 1,
+                attribution: 'Tiles © Esri',
+
+            });
+
+            gats = {
+
+                type: 'FeatureCollection',
+                features: [{
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.83926389746104, 41.698645512401306]
+                    },
+                    properties: {
+                        NOM: 'Els Comtals',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A01',
+                        NUM_GATS: '30',
+                        NUM_GATS_E: '30',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/01'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.813536855406829, 41.720898039264625]
+                    },
+                    properties: {
+                        NOM: 'El Congost',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A02',
+                        NUM_GATS: '15',
+                        NUM_GATS_E: '14',
+                        NUM_GATS_N: '1',
+                        FOTO: 'img/02'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.839786169671406, 41.737142275994429]
+                    },
+                    properties: {
+                        NOM: 'Texpol',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A03',
+                        NUM_GATS: '8',
+                        NUM_GATS_E: '8',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/03'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.826621908944356, 41.724053997599476]
+                    },
+                    properties: {
+                        NOM: 'El Carme',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A03',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '7',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/04'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.826697078861857, 41.722779445448211]
+                    },
+                    properties: {
+                        NOM: 'Ajuntament',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A03',
+                        NUM_GATS: '9',
+                        NUM_GATS_E: '9',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/05'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.825832011756151, 41.723296961675644]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Sant Pere',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A03',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '7',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/06'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.818310137247624, 41.727390683044518]
+                    },
+                    properties: {
+                        NOM: 'Carrer dels Tres Roures',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/07'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.806904420694783, 41.730422548802679]
+                    },
+                    properties: {
+                        NOM: 'Caravaning Pirelli',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '7',
+                        NUM_GATS_N: '7',
+                        FOTO: 'img/08'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.808305616169991, 41.729551870626103]
+                    },
+                    properties: {
+                        NOM: 'Ferralleria Pirelli',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '10',
+                        NUM_GATS_E: '8',
+                        NUM_GATS_N: '2',
+                        FOTO: 'img/09'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.821469409074663, 41.720530751882222]
+                    },
+                    properties: {
+                        NOM: 'Pàrquing Renfe',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '4',
+                        NUM_GATS_E: '2',
+                        NUM_GATS_N: '2',
+                        FOTO: 'img/10'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.826091867258811, 41.722607908020443]
+                    },
+                    properties: {
+                        NOM: 'Plaça de´n Creus',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/11'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.835205988054096, 41.71579592315134]
+                    },
+                    properties: {
+                        NOM: 'Sant Pau',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '20',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/12'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.835566641981886, 41.72199614238059]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Francesc Juanola',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '5',
+                        NUM_GATS_E: '5',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/13'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.836077556633817, 41.723833524553463]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Sant Magí',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/14'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.84433009914217, 41.731933236113456]
+                    },
+                    properties: {
+                        NOM: 'Guillem Catà',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '8',
+                        NUM_GATS_E: '5',
+                        NUM_GATS_N: '3',
+                        FOTO: 'img/15'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.832289832209112, 41.731782675456714]
+                    },
+                    properties: {
+                        NOM: 'Estació d´Autobusos porta blava',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '8',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/16'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.836101602656459, 41.731026712974419]
+                    },
+                    properties: {
+                        NOM: 'Carrer Sant Joan d´en Coll',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/17'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.816619646383298, 41.724268832672145]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Fonollar',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: '30',
+                        NUM_GATS_E: '30',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/18'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.825168107593033, 41.722030276865993]
+                    },
+                    properties: {
+                        NOM: 'Carrer d´Alfons XII',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '5',
+                        NUM_GATS_E: '5',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/19'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.831695035691873, 41.723657291151675]
+                    },
+                    properties: {
+                        NOM: 'Les Saleses',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '15',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/20'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.838282373701507, 41.728660743335553]
+                    },
+                    properties: {
+                        NOM: 'Sagrada Familia Bloc 19',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '0',
+                        NUM_GATS_N: '7',
+                        FOTO: 'img/21'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.83827299894237, 41.730567035479304]
+                    },
+                    properties: {
+                        NOM: 'Font dels Capellans',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/22'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.834577100671682, 41.732749050170717]
+                    },
+                    properties: {
+                        NOM: 'Vies FGC Estació d´Autobusos',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/23'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.832331395400177, 41.731252606526319]
+                    },
+                    properties: {
+                        NOM: 'Estació d´Autobusos',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '6',
+                        NUM_GATS_E: '3',
+                        NUM_GATS_N: '3',
+                        FOTO: 'img/24'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.822135382260897, 41.723168934983434]
+                    },
+                    properties: {
+                        NOM: 'Carrer del Pou',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '10',
+                        NUM_GATS_E: '10',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/25'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.822710194944593, 41.72387780793877]
+                    },
+                    properties: {
+                        NOM: 'Carrer de la Mel',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '45',
+                        NUM_GATS_E: '45',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/26'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.822992283092839, 41.723394018332634]
+                    },
+                    properties: {
+                        NOM: 'Carrer del Camp d´Urgell nº7',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/27'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.823808233724718, 41.723603226596055]
+                    },
+                    properties: {
+                        NOM: 'Carrer d´en Cirera',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/28'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.823958541986272, 41.722994484022003]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Talamanca nº16',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/29'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.824494637547386, 41.722999970005084]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Talamanca nº6',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '2',
+                        NUM_GATS_E: '2',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/30'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.822980254002216, 41.72264070082602]
+                    },
+                    properties: {
+                        NOM: 'Carrer d´Ignasi Balcells',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/31'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.821689300498854, 41.721905174554593]
+                    },
+                    properties: {
+                        NOM: 'Muralla de Sant Francesc',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '7',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/32'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.812630305871954, 41.726694156683884]
+                    },
+                    properties: {
+                        NOM: 'Cementiri',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A05',
+                        NUM_GATS: '15',
+                        NUM_GATS_E: '9',
+                        NUM_GATS_N: '6',
+                        FOTO: 'img/33'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.820354867882495, 41.722984579660476]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Mossèn Vall',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '7',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/34'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.825813857483965, 41.729830831576386]
+                    },
+                    properties: {
+                        NOM: 'Puigterrà',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: '10',
+                        NUM_GATS_E: '10',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/35'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.828455450166047, 41.730027748128109]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Circumval·lació',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/36'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.83461545912104, 41.732122087126143]
+                    },
+                    properties: {
+                        NOM: 'Caseta del Bosc',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: '7',
+                        NUM_GATS_E: '4',
+                        NUM_GATS_N: '3',
+                        FOTO: 'img/37'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.81518544011706, 41.725975065429871]
+                    },
+                    properties: {
+                        NOM: 'Avecrem',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/38'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.833277536121157, 41.730830010754062]
+                    },
+                    properties: {
+                        NOM: 'Carrer del Pare Clotet',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: '18',
+                        NUM_GATS_E: '0',
+                        NUM_GATS_N: '18',
+                        FOTO: 'img/39'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.838190715613581, 41.71771240851745]
+                    },
+                    properties: {
+                        NOM: 'Balconada',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A07',
+                        NUM_GATS: '30',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/40'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.84260676984241, 41.717826502356573]
+                    },
+                    properties: {
+                        NOM: 'Balconada pagès',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A07',
+                        NUM_GATS: '25',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/41'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.815016089146571, 41.730701056646161]
+                    },
+                    properties: {
+                        NOM: 'Sant Ignasi',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '12',
+                        NUM_GATS_E: '12',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/42'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.840712732069129, 41.72671177332824]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Sabadell',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A04',
+                        NUM_GATS: '10',
+                        NUM_GATS_E: '2',
+                        NUM_GATS_N: '8',
+                        FOTO: 'img/43'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.842125056689734, 41.726177755785415]
+                    },
+                    properties: {
+                        NOM: 'Sèquia',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/44'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.844585190097778, 41.7257837120804]
+                    },
+                    properties: {
+                        NOM: 'Fesmés',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/45'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.841432051395775, 41.723449777620893]
+                    },
+                    properties: {
+                        NOM: 'Dia Carrer de Sant Cristòfol',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '15',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/46'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.839944826009261, 41.7226885292473]
+                    },
+                    properties: {
+                        NOM: 'Sagrada Familia',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A13',
+                        NUM_GATS: '4',
+                        NUM_GATS_E: '4',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/47'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.850693949439565, 41.716017590412164]
+                    },
+                    properties: {
+                        NOM: 'Bufalvent 1',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: '5',
+                        NUM_GATS_E: '5',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/48'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.850889864598078, 41.716848420967565]
+                    },
+                    properties: {
+                        NOM: 'Bufalvent 2',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A06',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/49'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.827683593119525, 41.72332927528042]
+                    },
+                    properties: {
+                        NOM: 'Carrer de Santa Llúcia',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A09',
+                        NUM_GATS: '6',
+                        NUM_GATS_E: '6',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/50'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.834220735093593, 41.725746045131608]
+                    },
+                    properties: {
+                        NOM: 'Avinguda de Francesc Macià',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A03',
+                        NUM_GATS: '5',
+                        NUM_GATS_E: '5',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/51'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.824152334182897, 41.738374284270407]
+                    },
+                    properties: {
+                        NOM: 'FUB',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A08',
+                        NUM_GATS: '20',
+                        NUM_GATS_E: '19',
+                        NUM_GATS_N: '1',
+                        FOTO: 'img/52'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.820228268309519, 41.738664168657216]
+                    },
+                    properties: {
+                        NOM: 'Carrer del Puigmal',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A08',
+                        NUM_GATS: '22',
+                        NUM_GATS_E: '20',
+                        NUM_GATS_N: '2',
+                        FOTO: 'img/53'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.832429347962932, 41.728128346466015]
+                    },
+                    properties: {
+                        NOM: 'Fàbrica Nova',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A08',
+                        NUM_GATS: '12',
+                        NUM_GATS_E: '11',
+                        NUM_GATS_N: '1',
+                        FOTO: 'img/54'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.804966222729119, 41.715095795349477]
+                    },
+                    properties: {
+                        NOM: 'El Xup',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A10',
+                        NUM_GATS: '15',
+                        NUM_GATS_E: '15',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/55'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.804456565384332, 41.712927611471358]
+                    },
+                    properties: {
+                        NOM: 'Casa del Xup',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A10',
+                        NUM_GATS: '5',
+                        NUM_GATS_E: '5',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/56'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.828548669677504, 41.726986816948298]
+                    },
+                    properties: {
+                        NOM: 'Casa Caritat',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A11',
+                        NUM_GATS: '13',
+                        NUM_GATS_E: '13',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/57'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.819077640577568, 41.723823780501924]
+                    },
+                    properties: {
+                        NOM: 'Carrer de la Llum',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/58'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.823150097529169, 41.724510721038364]
+                    },
+                    properties: {
+                        NOM: 'Plaça d´Anselm Clavé',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/59'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.828982033547829, 41.7254411486905]
+                    },
+                    properties: {
+                        NOM: 'Carrer de l´Hospital',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A11',
+                        NUM_GATS: '8',
+                        NUM_GATS_E: '0',
+                        NUM_GATS_N: '8',
+                        FOTO: 'img/60'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.817011697860203, 41.730257255180184]
+                    },
+                    properties: {
+                        NOM: 'Passatge de Can Saldes',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A08',
+                        NUM_GATS: '15',
+                        NUM_GATS_E: '14',
+                        NUM_GATS_N: '1',
+                        FOTO: 'img/61'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.820526902747327, 41.730234155079856]
+                    },
+                    properties: {
+                        NOM: 'Pujolet - Plaça de Catalunya',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A12',
+                        NUM_GATS: '1',
+                        NUM_GATS_E: '1',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/62'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.819527852712162, 41.727209244823307]
+                    },
+                    properties: {
+                        NOM: 'Centre Cívic Selves i Carner',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/63'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.816497485681466, 41.728112742958558]
+                    },
+                    properties: {
+                        NOM: 'Carrer del Dibuixant Joan Vilanova',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/64'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.830237838711916, 41.718111387488015]
+                    },
+                    properties: {
+                        NOM: 'La Guia',
+                        TIPUS: 'Colònia',
+                        ESTAT_CONT: 'Alt',
+                        ALIMENTADO: 'A14',
+                        NUM_GATS: '10',
+                        NUM_GATS_E: '10',
+                        NUM_GATS_N: '0',
+                        FOTO: 'img/65'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.830210660831094, 41.721714324469737]
+                    },
+                    properties: {
+                        NOM: 'La Cova',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'Particular',
+                        NUM_GATS: 'Desconegut',
+                        NUM_GATS_E: 'Desconegut',
+                        NUM_GATS_N: 'Desconegut',
+                        FOTO: 'img/66'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.833980368621356, 41.710046119655566]
+                    },
+                    properties: {
+                        NOM: 'Fàbrica Blanca 1',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Mitjà',
+                        ALIMENTADO: 'A15',
+                        NUM_GATS: '3',
+                        NUM_GATS_E: '2',
+                        NUM_GATS_N: '1',
+                        FOTO: 'img/67'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [1.833095679674058, 41.710780660478505]
+                    },
+                    properties: {
+                        NOM: 'Fàbrica Blanca 2',
+                        TIPUS: 'Població',
+                        ESTAT_CONT: 'Baix',
+                        ALIMENTADO: 'A15',
+                        NUM_GATS: '12',
+                        NUM_GATS_E: '6',
+                        NUM_GATS_N: '6',
+                        FOTO: 'img/68'
+                    }
+                },
+                ]
+            };
+
+            var gatIcon = L.icon({
+                iconUrl: 'img/cat.png',
+                iconSize: [20, 20],
+                iconAnchor: [0, 0],
+                popupAnchor: [0, 0]
+            });
+
+
+            var customOptions =
+            {
+                'maxWidth': '200',
+                'maxHeight': '600',
+                'className': 'popupCustom',
+            }
+
+            function onEachFeature(feature, layer) {
+                popupContent = "<h2>" + feature.properties.NOM
+                    + "</h2><p class='popup-content-text'><img src='img/house.png' class='popup-foto'><strong> Tipus: </strong>"
+                    + feature.properties.TIPUS + "</p><p class='popup-content-text'><img src='img/cat4.png' class='popup-foto'><strong> Número de gats: </strong>"
+                    + feature.properties.NUM_GATS + "</p><p class='popup-content-text'><img src='img/cat1.png' class='popup-foto'><strong> Número de gats esterilitzats: </strong>"
+                    + feature.properties.NUM_GATS_E + "</p><p class='popup-content-text'><img src='img/cat2.png' class='popup-foto'><strong> Número de gats sense esterilitzar: </strong>"
+                    + feature.properties.NUM_GATS_N + "</p><p class='popup-content-text'><img src='img/green.png' class='popup-foto'><img src='img/yellow.png' class='popup-foto'><img src='img/red.png' class='popup-foto'><strong> Estat de control: </strong>"
+                    + feature.properties.ESTAT_CONT + "</p><p class='popup-content-text'><img src='img/cookie.png' class='popup-foto'><strong> Alimentadora: </strong>"
+                    + feature.properties.ALIMENTADO + "</p><img src=" + feature.properties.FOTO + ".png class='popup-foto2'></p> <p class='popup-content-text2'><strong>Dades actualitzades:</strong> febrer 2020</p>";
+                layer.bindPopup(popupContent, customOptions);
+            }
+
+            var layerGats = L.geoJson(gats, {
+
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, { icon: gatIcon });
+                },
+                onEachFeature: onEachFeature
+            }).addTo(map);
+
+            var gatLowIcon = L.icon({
+                iconUrl: 'img/red.png',
+                iconSize: [20, 20],
+                iconAnchor: [0, 0],
+                popupAnchor: [0, 0]
+            });
+
+            var gatMediumIcon = L.icon({
+                iconUrl: 'img/yellow.png',
+                iconSize: [20, 20],
+                iconAnchor: [0, 0],
+                popupAnchor: [0, 0]
+            });
+
+            var gatHighIcon = L.icon({
+                iconUrl: 'img/green.png',
+                iconSize: [20, 20],
+                iconAnchor: [0, 0],
+                popupAnchor: [0, 0]
+            });
+
+            function iconByGat(feature) {
+                var icon;
+                if (feature.properties.ESTAT_CONT == "Alt") icon = gatHighIcon;
+                else if (feature.properties.ESTAT_CONT == "Mitjà") icon = gatMediumIcon;
+                else icon = gatLowIcon;
+
+                return icon;
+            }
+
+            var layerGats2 = L.geoJSON(gats, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, { icon: iconByGat(feature) });
+                },
+                onEachFeature: onEachFeature
+            });
+
+            var layerGats3 = L.geoJson(gats, {
+
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, { icon: gatIcon });
+                },
+                filter: function (feature, layer) {
+                    if (feature.properties.TIPUS == 'Colònia') return true;
+                    else return false;
+                },
+                onEachFeature: onEachFeature
+            })
+
+            var layerGats4 = L.geoJson(gats, {
+
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, { icon: gatIcon });
+                },
+                filter: function (feature, layer) {
+                    if (feature.properties.TIPUS == 'Població') return true;
+                    else return false;
+                },
+                onEachFeature: onEachFeature
+            })
+
+            manresa = new L.GeoJSON.AJAX('data/manresa.geojson', {
+                style: function (feature) {
+                    return {
+                        "color": "#000000",
+                        "weight": 4,
+                        "opacity": 1,
+                        "fillOpacity": 0,
+                    };
+                },
+            })
+
+            var baseMaps = {
+                "Híbrid": capa1,
+                "Carrers": capa2,
+                "Imatge de satèl·lit": capa3,
+            };
+            var overlayMaps = {
+                "Localitzacions <img src='img/cat.png' class='control-foto'>": layerGats,
+                "Estat de control <img src='img/green.png' class='control-foto'><img src='img/yellow.png' class='control-foto'><img src='img/red.png' class='control-foto'>": layerGats2,
+                "Colònies <img src='img/house.png' class='control-foto'>": layerGats3,
+                "Poblacions <img src='img/house.png' class='control-foto'>": layerGats4,
+                "Límit municipal": manresa,
+            };
+
+            controlCapas = L.control.layers(baseMaps, overlayMaps, { collapsed: false });
+            controlCapas.addTo(map);
+
+            searchControl = new L.Control.Search({
+                layer: layerGats,
+                propertyName: 'NOM',
+                position: 'topright',
+                textPlaceholder: 'Buscar',
+                marker: {
+                    icon: false,
+                    circle: {
+                        radius: 40,
+                        color: '#9E1A32',
+                        opacity: 1
+                    }
+                },
+
+                moveToLocation: function (latlng) {
+
+                    map.setView(latlng, 35);
+                },
+            });
+
+            map.addControl(searchControl);
+
+            var controlEscala = new L.control.scale({ position: 'bottomright' });
+            map.addControl(controlEscala);
+
+            L.control.defaultExtent()
+                .addTo(map);
+
+        }
+
+    </script>
+</head>
+
+<body onLoad="init()">
+
+    <div class="header">
+        <table width="100%">
+            <tr>
+                <td align="left"><a href="http://www.manresa.cat/" target="_blank"><img src="img/logo-aj.png"></a></td>
+                <td align="right"><span style="color:white">
+                        <p class="header-text"> Colònies i poblacions de gats </p>
+                    </span></td>
+            </tr>
+        </table>
+    </div>
+    <div id="map"></div>
+</body>
+</head>
+
+</html>
